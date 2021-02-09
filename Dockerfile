@@ -24,7 +24,8 @@ ARG BUILD_DATE
 ARG VERSION
 ARG REVISION
 
-LABEL maintainer="stefanprodan"
+LABEL maintainer="stefanprodan" \
+      io.openshift.expose-services="9898:http"
 
 RUN addgroup -S app \
     && adduser -S -g app app \
@@ -39,5 +40,7 @@ COPY ./ui ./ui
 RUN chown -R app:app ./
 
 USER app
+
+EXPOSE 9898
 
 CMD ["./podinfo"]
