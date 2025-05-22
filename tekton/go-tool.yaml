@@ -1,0 +1,33 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: go-tool
+spec:
+  workspaces:
+    - name: source
+  results:
+    - name: output
+  params:
+    - name: CONTEXT
+      type: string
+      default: "."
+    - name: ARGS
+      type: string
+    - name: GO_IMAGE
+      type: string
+      default: "registry.access.redhat.com/ubi8/go-toolset:1.20"
+  steps:
+    - name: go-task
+      image: $(params.GO_IMAGE)
+      script: |
+        go $(params.ARGS) | tee $(results.output.path)
+      workingDir: $(workspaces.source.path)/$(params.CONTEXT)
+      env:
+        - name: CI
+          value: "true"
+        - name: HOME
+          value: $(workspaces.source.path)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
