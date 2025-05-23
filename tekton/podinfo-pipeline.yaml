@@ -85,21 +85,6 @@ spec:
       runAfter:
         - go-mod-download
 
-#   - name: npm-lint
-#     taskRef:
-#       name: npm
-#       kind: Task
-#     workspaces:
-#       - name: source
-#         workspace: shared
-#     params:
-#       - name: CONTEXT
-#         value: $(params.APP_PATH)
-#       - name: ARGS
-#         value: run lint
-#     runAfter:
-#       - npm-install
-
     - name: app-version
       taskRef:
         name: go-tool
